@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:movie_network_sdk/movie_network_sdk.dart';
 
-void main() {
+void main() async {
+  await MovieNetworkSdkClient.setup();
+  MovieRepository repository = MovieRepository();
+  final moviesEither = await repository.getTrending();
+  moviesEither.fold(((l) {}), (movie) {
+    print(movie);
+  });
   runApp(const MyApp());
 }
 
