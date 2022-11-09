@@ -18,15 +18,17 @@ class GetTrendingUseCase extends UseCase<List<MovieEntity>, NoParams> {
       (l) => Left(l),
       (r) {
         return Right(r
-            .map((e) => MovieEntity(
-                  e.overview,
-                  posterPath: e.poster ?? "",
-                  id: e.id,
-                  backdropPath: e.backDrop ?? "",
-                  title: e.title,
-                  voteAverage: e.rating ?? 0,
-                  releaseDate: e.releaseDate,
-                ))
+            .map(
+              (e) => MovieEntity(
+                e.overview,
+                posterPath: e.poster ?? "",
+                id: e.id,
+                backdropPath: e.backDrop ?? "",
+                title: e.title,
+                voteAverage: e.rating ?? 0,
+                releaseDate: e.releaseDate,
+              ),
+            )
             .toList());
       },
     );

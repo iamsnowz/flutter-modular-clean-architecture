@@ -10,31 +10,8 @@ import 'package:movie_network_sdk/src/data/repo/movie_repo_impl.dart';
 import 'package:movie_network_sdk/src/domain/repo/movie_repo.dart';
 import 'package:retrofit/dio.dart';
 
+import '../../../fixtures_reader.dart';
 import 'movie_remote_data_source_test.mocks.dart';
-
-final data = {
-  "page": 1,
-  "results": [
-    {
-      "adult": false,
-      "backdrop_path": "/zzoFeH4PsV5Mh2Sc47JOMFwGYOX.jpg",
-      "id": 829280,
-      "title": "Enola Holmes 2",
-      "original_language": "en",
-      "original_title": "Enola Holmes 2",
-      "overview":
-          "Now a detective-for-hire like her infamous brother, Enola Holmes takes on her first official case to find a missing girl, as the sparks of a dangerous conspiracy ignite a mystery that requires the help of friends — and Sherlock himself — to unravel.",
-      "poster_path": "/tegBpjM5ODoYoM1NjaiHVLEA0QM.jpg",
-      "media_type": "movie",
-      "genre_ids": [9648, 12, 80],
-      "popularity": 591.879,
-      "release_date": "2022-11-04",
-      "video": false,
-      "vote_average": 7.802,
-      "vote_count": 426
-    }
-  ]
-};
 
 @GenerateMocks([MovieRemoteDataSource])
 main() {
@@ -51,21 +28,24 @@ main() {
   });
 
   group('Get Trending', () {
-    test(
-        'should perform a GET request on /trending/movie/day?api_key=2bcf8c88652b69f33be463775e3715a1',
+    test('should return List<MovieModel> when the response is 200 (success)',
         () async {
+      final json = 'trending.json'.toFixture();
       const route =
           'trending/movie/day?api_key=2bcf8c88652b69f33be463775e3715a1';
-      dioAdapter.onGet(route, (server) => server.reply(200, data));
+      dioAdapter.onGet(route, (server) => server.reply(200, json));
       final result = await dio.get(route);
-      final value = MovieResultModel.fromJson(data);
+      final value = MovieResultModel.fromJson(json);
       final httpResponse = HttpResponse(value, result);
 
       when(mockMovieRemoteDataSource.getTrending())
           .thenAnswer((_) async => httpResponse);
 
       final response = await movieRepo.getTrending();
-      response.fold((l) => null, (r) => expect(r, httpResponse.data.movies));
+      response.fold(
+        (l) => null,
+        (r) => expect(r, httpResponse.data.movies),
+      );
     });
   });
 }
