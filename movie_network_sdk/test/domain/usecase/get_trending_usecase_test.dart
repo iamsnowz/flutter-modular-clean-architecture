@@ -29,7 +29,7 @@ main() {
         (_) => Future.value(Right(value.movies)),
       );
 
-      final response = await usecase.call(params: NoParams());
+      final response = await usecase(params: NoParams());
       response.fold(
         (l) => null,
         (r) => expect(r.length, value.movies.length),
