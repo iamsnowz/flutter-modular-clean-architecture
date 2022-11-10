@@ -7,6 +7,10 @@ coverage
 *.g.dart
 *.mocks.dart
 
+**/ios/
+**/macOS/
+
+
 # Conventional directory for build output.
 build/
 
