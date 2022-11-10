@@ -25,11 +25,14 @@ start using the package.
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+TODO: Please run script with command below:
 
-```dart
-const like = 'sample';
+```
+1. flutter pub get
+
+2. flutter pub run build_runner build --delete-conflicting-outputs
+
+3. flutter test
 ```
 
 ## Additional information
